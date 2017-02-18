@@ -1,8 +1,9 @@
 #include "DHT.h"
 #include "DHT_jni.h"
 
-JNIEXPORT void JNICALL Java_DHT_1jni_init (JNIEnv *env, jobject obj) {
-  systemInit();
+JNIEXPORT void JNICALL Java_DHT_1jni_init (JNIEnv *env, jobject obj, jint port) {
+  int data_pin = port;
+  systemInit(data_pin);
 }
 
 JNIEXPORT jint JNICALL Java_DHT_1jni_readDHTData (JNIEnv *env, jobject obj, jobject dhtData) {

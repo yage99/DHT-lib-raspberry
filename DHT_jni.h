@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     DHT_jni
  * Method:    init
- * Signature: ()V
+ * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_DHT_1jni_init
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     DHT_jni

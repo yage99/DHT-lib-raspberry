@@ -1,5 +1,7 @@
 #include "DHT.h"
 
+int DATA_PIN = 0;
+
 int word(char low, char high) {
   int word = high;
   word <<= 8;
@@ -7,7 +9,8 @@ int word(char low, char high) {
   return word;
 }
 
-void systemInit() {
+void systemInit(int port) {
+  DATA_PIN = port;
   wiringPiSetup();
 }
 
@@ -37,22 +40,38 @@ int readDHTData(float* temp, float* hu) {
   pinMode(DATA_PIN, INPUT);
   //printf("Wait coming sig %d,%d\n", millis(), micros());
 
-  
-  while(digitalRead(DATA_PIN) == LOW);
+  timeout = 10;
+  // 80us
+  while(digitalRead(DATA_PIN) == LOW) {
+    if(timeout-- < 0) {
+      return 0;
+    }
+    delayMicroseconds(10);
+  }
   //printf("up\n");
-  while(digitalRead(DATA_PIN) == HIGH);
+  timeout = 10;
+  // 80 us
+  while(digitalRead(DATA_PIN) == HIGH) {
+    if(timeout-- < 0) {
+      return 0;
+    }
+    delayMicroseconds(10);
+  }
   //printf("down & ready");
 
   // reading 40 bits data
   for (i=0;i<40;i++) {
-    timeout = TIMEOUT_COUNT;
+    timeout = 10;
+    // 50us
     while(digitalRead(DATA_PIN) == LOW);
 
     start = micros();
+    // 26-28us && 70us
     while(digitalRead(DATA_PIN) == HIGH) {
       if(timeout-- < 0) {
 	return 0;
       }
+      delayMicroseconds(10);
     }
     end = micros();
     if(end - start > 40) bit = 1;
@@ -81,7 +100,7 @@ int readDHTData(float* temp, float* hu) {
 }
 
 int main(void) {
-  systemInit();
+  systemInit(0);
 
   float temp;
   float hu;
