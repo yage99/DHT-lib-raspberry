@@ -1,3 +1,5 @@
+package com.yage.raspberry;
+
 public class DHT_data {
     private float temperature;
     private float hu;

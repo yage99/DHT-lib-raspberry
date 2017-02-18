@@ -1,3 +1,4 @@
+package com.yage.raspberry;
 
 public class DHT_jni {
     static {

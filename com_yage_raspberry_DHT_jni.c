@@ -1,12 +1,12 @@
+#include "com_yage_raspberry_DHT_jni.h"
 #include "DHT.h"
-#include "DHT_jni.h"
 
-JNIEXPORT void JNICALL Java_DHT_1jni_init (JNIEnv *env, jobject obj, jint port) {
+JNIEXPORT void JNICALL Java_com_yage_raspberry_DHT_1jni_init(JNIEnv *env, jobject obj, jint port) {
   int data_pin = port;
   systemInit(data_pin);
 }
 
-JNIEXPORT jint JNICALL Java_DHT_1jni_readDHTData (JNIEnv *env, jobject obj, jobject dhtData) {
+JNIEXPORT jint JNICALL Java_com_yage_raspberry_DHT_1jni_readDHTData(JNIEnv *env, jobject obj, jobject dhtData) {
   float temp;
   float hu;
 
