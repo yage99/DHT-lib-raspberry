@@ -6,9 +6,9 @@ At the same time, a java API wrapped by jni is also avaiable.
 
 ## How to use
 
-### 1. Build by your self.
-
 This library required wiringPi be installed first. Refer: http://wiringpi.com/download-and-install/
+
+### 1. Build by yourself
 
 Run build script as root:
 
