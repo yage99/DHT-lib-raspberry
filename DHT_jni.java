@@ -18,10 +18,11 @@ public class DHT_jni {
 	dht.init(port);
 	DHT_data data = new DHT_data();
 
-	if(dht.readDHTData(data) == 1) {
+	int response = 0;
+	if((response = dht.readDHTData(data)) == 0) {
 	    System.out.printf("%f, %f\n", data.getTemperature(), data.getHu());
 	} else {
-	    System.out.println("error");
+	    System.out.println("error:" + response);
 	}
     }
 }

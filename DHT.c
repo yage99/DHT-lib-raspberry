@@ -40,28 +40,26 @@ int readDHTData(float* temp, float* hu) {
   pinMode(DATA_PIN, INPUT);
   //printf("Wait coming sig %d,%d\n", millis(), micros());
 
-  timeout = 10;
+  timeout = TIMEOUT_COUNT;
   // 80us
   while(digitalRead(DATA_PIN) == LOW) {
     if(timeout-- < 0) {
-      return 0;
+      return NO_RESPONSE;
     }
-    delayMicroseconds(10);
   }
   //printf("up\n");
-  timeout = 10;
+  timeout = TIMEOUT_COUNT;
   // 80 us
   while(digitalRead(DATA_PIN) == HIGH) {
     if(timeout-- < 0) {
-      return 0;
+      return NO_DATA;
     }
-    delayMicroseconds(10);
   }
   //printf("down & ready");
 
   // reading 40 bits data
   for (i=0;i<40;i++) {
-    timeout = 10;
+    timeout = TIMEOUT_COUNT;
     // 50us
     while(digitalRead(DATA_PIN) == LOW);
 
@@ -69,9 +67,8 @@ int readDHTData(float* temp, float* hu) {
     // 26-28us && 70us
     while(digitalRead(DATA_PIN) == HIGH) {
       if(timeout-- < 0) {
-	return 0;
+	return TIMEOUT;
       }
-      delayMicroseconds(10);
     }
     end = micros();
     if(end - start > 40) bit = 1;
@@ -89,10 +86,10 @@ int readDHTData(float* temp, float* hu) {
     *hu = data[0] * 1.0;
     *temp = data[2] * 1.0;
     //printf("su");
-    return 1;
+    return OK;
   } else {
     //printf("read data check error\n");
-    return 0;
+    return VALIDATION_ERROR;
   }
 
   pinMode(DATA_PIN, OUTPUT);
@@ -100,20 +97,26 @@ int readDHTData(float* temp, float* hu) {
 }
 
 int main(void) {
-  systemInit(0);
+  systemInit(15);
 
   float temp;
   float hu;
-  
-  int s = micros();
-  printf("printf use time %d ", micros());
-  int e = micros();
-  printf("%d us\n", e-s);
+  int resp;
+  int start = 0;
+  int end = 0;
+  int count = TIMEOUT_COUNT;
+  start = micros();
   while(1) {
-    if(readDHTData(&temp, &hu)) {
+    if(count-- < 0) break;
+  }
+  end = micros();
+  printf("time out is %dus\n", end-start);
+
+  while(1) {
+    if((resp = readDHTData(&temp, &hu)) == 0) {
       printf("tempreture is %f, hu is %f\n", temp, hu);
     } else {
-      printf("read error\n");
+      printf("read error: %d\n", resp);
     }
     delay(2000);
   }
