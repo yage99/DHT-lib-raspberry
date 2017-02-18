@@ -22,7 +22,7 @@ public class DHT_jni {
 	if((response = dht.readDHTData(data)) == 0) {
 	    System.out.printf("%f, %f\n", data.getTemperature(), data.getHu());
 	} else {
-	    System.out.println("error:" + response);
+	    System.out.println("error: " + response);
 	}
     }
 }

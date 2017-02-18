@@ -10,7 +10,8 @@ JNIEXPORT jint JNICALL Java_DHT_1jni_readDHTData (JNIEnv *env, jobject obj, jobj
   float temp;
   float hu;
 
-  if(readDHTData(&temp, &hu) != 1) return 0;
+  int resp = 0;
+  if((resp = readDHTData(&temp, &hu)) != 0) return resp;
 
   jclass clazz = (*env)->GetObjectClass(env, dhtData);
 
@@ -20,5 +21,5 @@ JNIEXPORT jint JNICALL Java_DHT_1jni_readDHTData (JNIEnv *env, jobject obj, jobj
   (*env)->SetFloatField(env, dhtData, param1Field, temp);
   (*env)->SetFloatField(env, dhtData, param2Field, hu);
 
-  return 1;
+  return 0;
 }
