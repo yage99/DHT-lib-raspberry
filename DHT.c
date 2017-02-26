@@ -74,7 +74,7 @@ int readDHTData(float* temp, float* hu) {
     if(end - start > 40) bit = 1;
     else bit = 0;
     data[i/8] <<= 1;
-    data[i/8] |= bit;
+    data[i/8] += bit;
   }
 
   int checksum = 0;

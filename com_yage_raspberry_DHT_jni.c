@@ -11,7 +11,7 @@ JNIEXPORT jint JNICALL Java_com_yage_raspberry_DHT_1jni_readDHTData(JNIEnv *env,
   float hu;
 
   int resp = 0;
-  if((resp = readDHTData(&temp, &hu)) != 0) return resp;
+  if((resp = readDHTData(&hu, &temp)) != 0) return resp;
 
   jclass clazz = (*env)->GetObjectClass(env, dhtData);
 
